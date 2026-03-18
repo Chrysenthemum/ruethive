@@ -1,0 +1,47 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'widgets/app_scaffold.dart';
+import 'screens/cr/cr_scaffold.dart';
+import 'screens/admin/admin_scaffold.dart';
+import 'core/state/role_provider.dart';
+import 'core/state/theme_provider.dart';
+import 'core/theme/app_theme.dart';
+
+void main() {
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
+}
+
+class MyApp extends ConsumerWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final role = ref.watch(roleProvider);
+    final themeMode = ref.watch(themeProvider);
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'RUETHive',
+      theme: AppTheme.light(role),
+      darkTheme: AppTheme.dark(role),
+      themeMode: themeMode,
+      home: _buildHome(role),
+    );
+  }
+
+  Widget _buildHome(UserRole role) {
+    switch (role) {
+      case UserRole.cr:
+        return const CRScaffold();
+      case UserRole.admin:
+        return const AdminScaffold();
+      case UserRole.student:
+        return const AppScaffold();
+    }
+  }
+}
