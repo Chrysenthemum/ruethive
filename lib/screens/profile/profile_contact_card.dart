@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import '../../core/ui/spacing.dart';
 import '../../core/ui/shadows.dart';
 
-/// Floating card that overlaps the gradient header.
-/// Positioned by the parent [ProfileScreen] Stack — no Transform.translate
-/// needed, which makes the layout predictable on all screen sizes.
 class ProfileContactCard extends StatelessWidget {
   final String email;
   final String memberSince;

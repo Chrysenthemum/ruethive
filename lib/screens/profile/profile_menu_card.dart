@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/ui/spacing.dart';
 import '../../core/ui/shadows.dart';
 
-// ── Data class ───────────────────────────────────────────────────
+// Data class
 class ProfileMenuItem {
   final IconData icon;
   final String title;
@@ -17,7 +17,7 @@ class ProfileMenuItem {
   });
 }
 
-// ── Menu options card ────────────────────────────────────────────
+//  Menu options card -----------
 class ProfileMenuCard extends StatelessWidget {
   const ProfileMenuCard({super.key});
 
@@ -144,7 +144,7 @@ class _MenuTile extends StatelessWidget {
   }
 }
 
-// ── Logout button ────────────────────────────────────────────────
+//  Logout button
 class ProfileLogoutButton extends StatelessWidget {
   final VoidCallback onTap;
 
@@ -195,7 +195,7 @@ class ProfileLogoutButton extends StatelessWidget {
   }
 }
 
-// ── Footer ────────────────────────────────────────────────────────
+//  Footer ------------------
 class ProfileFooter extends StatelessWidget {
   const ProfileFooter({super.key});
 
@@ -222,7 +222,7 @@ class ProfileFooter extends StatelessWidget {
   }
 }
 
-// ── Logout confirmation overlay ───────────────────────────────────
+//  Logout confirmation overlay --------------
 class ProfileLogoutDialog extends StatelessWidget {
   final VoidCallback onCancel;
   final VoidCallback onConfirm;

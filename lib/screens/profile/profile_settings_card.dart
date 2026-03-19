@@ -29,7 +29,7 @@ class ProfileSettingsCard extends ConsumerWidget {
       ),
       child: Column(
         children: [
-          // ── Card header ─────────────────────────────────
+          //  Card header
           Container(
             padding: const EdgeInsets.symmetric(
               horizontal: AppSpacing.md,
@@ -60,7 +60,7 @@ class ProfileSettingsCard extends ConsumerWidget {
             padding: const EdgeInsets.all(AppSpacing.md),
             child: Column(
               children: [
-                // ── Appearance ──────────────────────────────
+                //  Appearance
                 _ToggleRow(
                   icon: Icons.wb_sunny_outlined,
                   iconColor: const Color(0xFFFFA726),
@@ -76,7 +76,7 @@ class ProfileSettingsCard extends ConsumerWidget {
                   color: colorScheme.outlineVariant.withValues(alpha: 0.5),
                 ),
 
-                // ── Notifications master ─────────────────────
+                //  Notifications master
                 _ToggleRow(
                   icon: Icons.notifications_outlined,
                   iconColor: const Color(0xFF1E88E5),
@@ -89,7 +89,7 @@ class ProfileSettingsCard extends ConsumerWidget {
                   colorScheme: colorScheme,
                 ),
 
-                // ── Per-type sub-toggles (animated expand) ───
+                // Per-type sub-toggles (animated expand)
                 AnimatedSize(
                   duration: const Duration(milliseconds: 250),
                   curve: Curves.easeInOut,
@@ -146,7 +146,7 @@ class ProfileSettingsCard extends ConsumerWidget {
   }
 }
 
-// ── Toggle row ───────────────────────────────────────────────────
+//  Toggle row
 class _ToggleRow extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
@@ -202,7 +202,7 @@ class _ToggleRow extends StatelessWidget {
   }
 }
 
-// ── Sub-toggle row (indented) ────────────────────────────────────
+//  Sub-toggle row (indented)
 class _SubToggleRow extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
@@ -252,7 +252,7 @@ class _SubToggleRow extends StatelessWidget {
   }
 }
 
-// ── Shared animated toggle pill ──────────────────────────────────
+//  Shared animated toggle pill
 class _AnimatedToggle extends StatelessWidget {
   final bool value;
   final ValueChanged<bool> onChanged;

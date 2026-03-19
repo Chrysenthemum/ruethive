@@ -44,7 +44,7 @@ class ProfileAcademicCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          // ── Card header ─────────────────────────────────
+          //  Card header --------------
           Container(
             padding: const EdgeInsets.all(AppSpacing.md),
             decoration: BoxDecoration(
@@ -70,7 +70,7 @@ class ProfileAcademicCard extends StatelessWidget {
             ),
           ),
 
-          // ── Rows ────────────────────────────────────────
+          //  Rows -----------
           Padding(
             padding: const EdgeInsets.all(AppSpacing.md),
             child: Column(

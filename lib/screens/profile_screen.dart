@@ -10,7 +10,7 @@ import 'profile/profile_academic_card.dart';
 import 'profile/profile_settings_card.dart';
 import 'profile/profile_menu_card.dart';
 
-// ── How far the contact card floats above the header bottom edge ──
+//  How far the contact card floats above the header bottom edge
 const double _cardOverlap = 160.0;
 
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -31,15 +31,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
     return Stack(
       children: [
-        // ── Main scrollable content ──────────────────────
+        // Main scrollable content
         CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  // Gradient header — bottom padding = _cardOverlap so there's
-                  // visual breathing room before the card overlaps it.
+
                   ProfileHeader(
                     name: user.name,
                     studentId: user.studentId,
@@ -85,7 +84,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ],
         ),
 
-        // ── Logout confirmation overlay ──────────────────
+        // Logout confirmation overlay
         if (_showLogoutDialog)
           ProfileLogoutDialog(
             onCancel: () => setState(() => _showLogoutDialog = false),

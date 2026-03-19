@@ -4,12 +4,7 @@ import '../../core/state/theme_provider.dart';
 import '../../core/ui/spacing.dart';
 import '../../core/ui/shadows.dart';
 
-/// The gradient header section of the profile screen.
-///
-/// No longer uses a hardcoded bottom padding to create space for the
-/// floating card. Instead the card overlap is handled in [ProfileScreen]
-/// using a [Stack] so this widget ends at the bottom of the avatar/name
-/// content naturally.
+
 class ProfileHeader extends ConsumerWidget {
   final String name;
   final String studentId;
@@ -36,14 +31,12 @@ class ProfileHeader extends ConsumerWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      // Bottom padding is just enough to let the floating card overlap in
-      // nicely — the overlap itself is handled by the Stack in ProfileScreen.
-      // We use AppSpacing.xxl (48px) so the card overlaps half its height.
+
       padding: EdgeInsets.fromLTRB(
         AppSpacing.lg,
         AppSpacing.md,
         AppSpacing.lg,
-        AppSpacing.xxl, // 48 — half the card's visual overlap
+        AppSpacing.xxl, // 48 - half the card's visual overlap
       ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -59,7 +52,7 @@ class ProfileHeader extends ConsumerWidget {
         bottom: false,
         child: Column(
           children: [
-            // ── Top row: title + theme toggle ──────────────
+            // Top row: title + theme toggle
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -95,7 +88,7 @@ class ProfileHeader extends ConsumerWidget {
             ),
             const SizedBox(height: AppSpacing.lg),
 
-            // ── Avatar ──────────────────────────────────────
+            // Avatar
             Stack(
               children: [
                 Container(
@@ -143,7 +136,7 @@ class ProfileHeader extends ConsumerWidget {
             ),
             const SizedBox(height: AppSpacing.md),
 
-            // ── Name + ID ───────────────────────────────────
+            //  Name + ID
             Text(
               name,
               style: const TextStyle(
