@@ -5,6 +5,7 @@ import '../models/notice_model.dart';
 /// ----------------------------
 /// TODAY'S SCHEDULE (Dashboard)
 /// ----------------------------
+
 final List<ScheduleItem> todaySchedule = [
   ScheduleItem(
     subject: 'Data Structures',
@@ -38,6 +39,7 @@ final List<ScheduleItem> todaySchedule = [
 /// ----------------------------
 /// FULL WEEK SCHEDULE
 /// ----------------------------
+
 final List<ScheduleItem> fullSchedule = [
   // Monday
   ScheduleItem(

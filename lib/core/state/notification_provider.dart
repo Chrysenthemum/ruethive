@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// ── Notification types ───────────────────────────────────────────
+//  Notification types ------------------
 enum NotifType { schedule, urgentNotice, departmentNotice, crApproval, general }
 
-// ── A single notification item ───────────────────────────────────
+// A single notification item -----------------
 class AppNotification {
   final String id;
   final NotifType type;
@@ -31,7 +31,7 @@ class AppNotification {
   );
 }
 
-// ── Notification settings ────────────────────────────────────────
+// Notification settings ------------------
 class NotifSettings {
   final bool enabled;
   final bool newSchedules;
@@ -63,7 +63,7 @@ class NotifSettings {
       );
 }
 
-// ── Combined state ───────────────────────────────────────────────
+// Combined state--------------
 class NotificationState {
   final List<AppNotification> notifications;
   final NotifSettings settings;
@@ -85,7 +85,7 @@ class NotificationState {
       );
 }
 
-// ── Notifier ─────────────────────────────────────────────────────
+// Notifier -------------
 class NotificationNotifier extends StateNotifier<NotificationState> {
   NotificationNotifier()
       : super(NotificationState(
@@ -144,7 +144,7 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
   }
 }
 
-// ── Provider ─────────────────────────────────────────────────────
+//  Provider ---------------------------
 final notificationProvider =
 StateNotifierProvider<NotificationNotifier, NotificationState>(
         (ref) => NotificationNotifier());
@@ -154,7 +154,7 @@ final unreadCountProvider = Provider<int>((ref) {
   return ref.watch(notificationProvider).unreadCount;
 });
 
-// ── Dummy data ────────────────────────────────────────────────────
+//  Dummy data ----------------------
 List<AppNotification> _dummyNotifications() {
   final now = DateTime.now();
   return [

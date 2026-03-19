@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class NoticeItem {
   final String title;
   final String description;
-  final String time;      // human-readable label e.g. "2h ago"
-  final DateTime? date;   // actual date — used for calendar filtering
+  final String time;      // human-readable label
+  final DateTime? date;   //calendar-filtering
   final String postedBy;
   final NoticeType type;
 
