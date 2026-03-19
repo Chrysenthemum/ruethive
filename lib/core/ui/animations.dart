@@ -2,11 +2,6 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 
 
-// AppAnimations
-//
-// Central animation constants and curves for the whole app.
-// All durations reference AppConstants so there is one source of truth.
-
 
 class AppAnimations {
   AppAnimations._();
@@ -23,13 +18,7 @@ class AppAnimations {
   static const double cardHoverLift       = -2.0; // offset Y in pixels
 }
 
-// AnimatedScaleButton
-//
-// Wraps any widget in a subtle scale-down on press.
-// Use for calendar cells, cards, icon buttons - any tappable surface.
-//
-// Usage:
-//   AnimatedScaleButton(onTap: () {}, child: MyCard())
+
 
 class AnimatedScaleButton extends StatefulWidget {
   final Widget child;
@@ -68,13 +57,6 @@ class _AnimatedScaleButtonState extends State<AnimatedScaleButton> {
 }
 
 
-// FadeInWidget
-//
-// Fades + slides content in on first build.
-// Use on screen loads, list items, dashboard sections.
-//
-// Usage:
-//   FadeInWidget(delay: Duration(milliseconds: 100), child: MyWidget())
 
 
 class FadeInWidget extends StatefulWidget {
@@ -135,14 +117,6 @@ class _FadeInWidgetState extends State<FadeInWidget>
     );
   }
 }
-
-
-// SlideInWidget
-//
-// Slides content in from an edge - for bottom sheets, drawers, modals.
-//
-// Usage:
-//   SlideInWidget(from: SlideFrom.bottom, child: MyBottomSheet())
 
 
 enum SlideFrom { bottom, left, right, top }
@@ -211,13 +185,7 @@ class _SlideInWidgetState extends State<SlideInWidget>
   }
 }
 
-// HoverLiftCard
-//
-// Card that lifts on desktop hover - subtle -2px translateY + deeper shadow.
-// On mobile/touch the lift never triggers (no hover events).
-//
-// Usage:
-//   HoverLiftCard(child: MyScheduleCard())
+
 
 
 class HoverLiftCard extends StatefulWidget {
@@ -250,13 +218,7 @@ class _HoverLiftCardState extends State<HoverLiftCard> {
 }
 
 
-// AnimatedNavIcon
-//
-// Bottom nav icon that scales up when selected.
-// Wrap around any Icon in a custom bottom nav destination.
-//
-// Usage:
-//   AnimatedNavIcon(isSelected: index == 0, icon: Icons.dashboard_rounded)
+
 
 class AnimatedNavIcon extends StatelessWidget {
   final IconData icon;
@@ -286,26 +248,8 @@ class AnimatedNavIcon extends StatelessWidget {
 }
 
 
-// PanelSwitcher
-//
-// AnimatedSwitcher preset for swapping panel content (e.g. the date detail
-// panel on the desktop dashboard). Fade + slight upward slide on content swap.
-//
-// Usage:
-//   PanelSwitcher(
-//     switchKey: ValueKey(selectedDate),
-//     child: MyDetailPanel(),
-//   )
 
 
-
-// AnimatedIconRotation
-//
-// Rotates an icon smoothly when [rotated] flips - useful for expand/collapse
-// chevrons, sort toggles, or any icon that signals state via orientation.
-//
-// Usage:
-//   AnimatedIconRotation(rotated: _isExpanded, icon: Icons.expand_more_rounded)
 
 
 class AnimatedIconRotation extends StatelessWidget {
