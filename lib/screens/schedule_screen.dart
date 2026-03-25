@@ -4,6 +4,7 @@ import '../widgets/schedule_card.dart';
 import '../widgets/toggle_switch.dart';
 import '../widgets/loading_states.dart';
 import '../core/ui/spacing.dart';
+import '../core/utils/date_utils_ext.dart';
 
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({super.key});
@@ -20,7 +21,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   @override
   void initState() {
     super.initState();
-    // Simulate initial data fetch — replace with Firestore call later
+    // Simulate initial data fetch - replace with Firestore call later
     Future.delayed(const Duration(milliseconds: 800), () {
       if (mounted) setState(() => _isLoading = false);
     });
@@ -56,7 +57,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       },
     );
 
-    if (picked != null && picked != selectedDate) {
+    if (picked != null && !AppDateUtils.isSameDay(picked, selectedDate)) {
       setState(() => selectedDate = picked);
     }
   }
@@ -99,9 +100,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   }
 
   Widget _buildDateCard(ColorScheme colorScheme) {
-    final weekday = _getWeekday(selectedDate.weekday);
-    final month = _getMonth(selectedDate.month);
-    final isToday = _isToday(selectedDate);
+    final isToday = AppDateUtils.isToday(selectedDate);
 
     return Container(
       margin: const EdgeInsets.symmetric(
@@ -124,6 +123,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             padding: const EdgeInsets.all(AppSpacing.md),
             child: Row(
               children: [
+                // Month + day badge
                 Container(
                   width: 48,
                   height: 48,
@@ -135,7 +135,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        month.substring(0, 3).toUpperCase(),
+                        AppDateUtils.monthShort(selectedDate).toUpperCase(),
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
@@ -143,7 +143,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         ),
                       ),
                       Text(
-                        '${selectedDate.day}',
+                        AppDateUtils.dayNumber(selectedDate),
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -154,6 +154,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   ),
                 ),
                 const SizedBox(width: AppSpacing.md),
+
+                // Date info
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,12 +187,15 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                 ),
                               ),
                             ),
-                          Text(
-                            '$weekday, $month ${selectedDate.day}, ${selectedDate.year}',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
-                              color: colorScheme.onSurface,
+                          Expanded(
+                            child: Text(
+                              AppDateUtils.displayFull(selectedDate),
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: colorScheme.onSurface,
+                              ),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],
@@ -198,6 +203,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     ],
                   ),
                 ),
+
                 Icon(
                   Icons.calendar_month_rounded,
                   color: colorScheme.primary,
@@ -214,7 +220,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     return AppEmptyState(
       icon: Icons.event_busy_rounded,
       title: 'No classes scheduled',
-      subtitle: 'Try selecting a different date',
+      subtitle: daily
+          ? 'No classes on ${AppDateUtils.weekdayName(selectedDate)}'
+          : 'Try selecting a different date',
       action: OutlinedButton.icon(
         onPressed: _selectDate,
         icon: const Icon(Icons.calendar_today_rounded, size: 18),
@@ -230,28 +238,5 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
         ),
       ),
     );
-  }
-
-  bool _isToday(DateTime date) {
-    final now = DateTime.now();
-    return date.year == now.year &&
-        date.month == now.month &&
-        date.day == now.day;
-  }
-
-  String _getWeekday(int weekday) {
-    const days = [
-      'Monday', 'Tuesday', 'Wednesday', 'Thursday',
-      'Friday', 'Saturday', 'Sunday'
-    ];
-    return days[weekday - 1];
-  }
-
-  String _getMonth(int month) {
-    const months = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
-    ];
-    return months[month - 1];
   }
 }

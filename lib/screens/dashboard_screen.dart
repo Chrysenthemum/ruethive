@@ -8,6 +8,7 @@ import '../core/state/user_provider.dart';
 import '../core/ui/spacing.dart';
 import '../core/ui/animations.dart';
 import '../core/responsive/responsive.dart';
+import '../core/utils/date_utils_ext.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
@@ -32,8 +33,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final isDesktop = Responsive.isDesktop(context);
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    final colorScheme = Theme.of(context).colorScheme;
     final user = ref.watch(currentUserProvider);
 
     if (isDesktop) {
@@ -42,8 +42,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     return _buildMobileLayout(context, colorScheme, user);
   }
 
-// MOBILE LAYOUT - Simple Dashboard
-  Widget _buildMobileLayout(BuildContext context, ColorScheme colorScheme, user) {
+  //  Mobile Layout
+
+  Widget _buildMobileLayout(
+      BuildContext context, ColorScheme colorScheme, user) {
     if (_isLoading) {
       return ListView(
         padding: const EdgeInsets.all(AppSpacing.md),
@@ -78,8 +80,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     );
   }
 
-  // DESKTOP LAYOUT - 3 Column: Welcome | Calendar | Details
-  Widget _buildDesktopLayout(BuildContext context, ColorScheme colorScheme, user) {
+  // Desktop Layout
+
+  Widget _buildDesktopLayout(
+      BuildContext context, ColorScheme colorScheme, user) {
     if (_isLoading) {
       return Row(
         children: [
@@ -106,7 +110,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(24)),
               child: const Center(
-                child: ShimmerBox(width: double.infinity, height: double.infinity, radius: 24),
+                child: ShimmerBox(
+                    width: double.infinity,
+                    height: double.infinity,
+                    radius: 24),
               ),
             ),
           ),
@@ -132,9 +139,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         ],
       );
     }
+
     return Row(
       children: [
-        // Left column — welcome + today's classes
+        // LEFT - Welcome + Today's Classes
         Expanded(
           flex: 1,
           child: SingleChildScrollView(
@@ -162,7 +170,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           ),
         ),
 
-        // Center column — calendar
+        // CENTER - Calendar
         Expanded(
           flex: 2,
           child: Card(
@@ -172,16 +180,13 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             ),
             child: Column(
               children: [
-                // Calendar Header with Month Navigation
                 _buildCalendarHeader(colorScheme),
-                // Calendar Grid
                 Expanded(
                   child: CalendarGrid(
                     month: currentMonth,
                     selectedDate: selectedDate,
-                    onDaySelected: (date) {
-                      setState(() => selectedDate = date);
-                    },
+                    onDaySelected: (date) =>
+                        setState(() => selectedDate = date),
                   ),
                 ),
               ],
@@ -189,7 +194,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           ),
         ),
 
-        // Right column — selected date details
+        // RIGHT - Date Details
         Expanded(
           flex: 1,
           child: Card(
@@ -211,7 +216,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     );
   }
 
-  // ─── Components ───────────────────────────────────────────
+  //  Components
+
   Widget _buildWelcomeCard(ColorScheme colorScheme, user) {
     return Card(
       shape: RoundedRectangleBorder(
@@ -245,11 +251,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   }
 
   Widget _buildCalendarHeader(ColorScheme colorScheme) {
-    const monthNames = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
-    ];
-
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
@@ -263,15 +264,14 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-            onPressed: () => setState(() {
-              currentMonth =
-                  DateTime(currentMonth.year, currentMonth.month - 1);
-            }),
+            onPressed: () => setState(
+                  () => currentMonth = AppDateUtils.previousMonth(currentMonth),
+            ),
             icon: const Icon(Icons.chevron_left_rounded),
             tooltip: 'Previous Month',
           ),
           Text(
-            '${monthNames[currentMonth.month - 1]} ${currentMonth.year}',
+            AppDateUtils.monthYear(currentMonth),
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -279,10 +279,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             ),
           ),
           IconButton(
-            onPressed: () => setState(() {
-              currentMonth =
-                  DateTime(currentMonth.year, currentMonth.month + 1);
-            }),
+            onPressed: () => setState(
+                  () => currentMonth = AppDateUtils.nextMonth(currentMonth),
+            ),
             icon: const Icon(Icons.chevron_right_rounded),
             tooltip: 'Next Month',
           ),
@@ -295,7 +294,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     return const AppEmptyState(
       icon: Icons.calendar_today_rounded,
       title: 'Select a date',
-      subtitle: 'Tap any date on the calendar to view schedules and notices',
+      subtitle:
+      'Tap any date on the calendar to view schedules and notices',
     );
   }
 
@@ -308,7 +308,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Date header card
+          // Date header badge
           Container(
             padding: const EdgeInsets.all(AppSpacing.md),
             decoration: BoxDecoration(
@@ -328,7 +328,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        _getMonthShort(date.month),
+                        AppDateUtils.monthShort(date).toUpperCase(),
                         style: const TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
@@ -336,7 +336,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                         ),
                       ),
                       Text(
-                        '${date.day}',
+                        AppDateUtils.dayNumber(date),
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -352,7 +352,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _getWeekday(date.weekday),
+                        AppDateUtils.weekdayName(date),
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -360,7 +360,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                         ),
                       ),
                       Text(
-                        '${date.day}/${date.month}/${date.year}',
+                        AppDateUtils.numeric(date),
                         style: TextStyle(
                           fontSize: 12,
                           color: colorScheme.onPrimaryContainer
@@ -376,11 +376,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
           const SizedBox(height: AppSpacing.lg),
 
-          // Content
           Expanded(
             child: ListView(
               children: [
-                // Schedules Section
+                // Schedules
                 if (schedules.isNotEmpty) ...[
                   Row(
                     children: [
@@ -403,8 +402,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   const SizedBox(height: AppSpacing.lg),
                 ],
 
-                // Notices Section
-
+                // Notices
                 if (dateNotices.isNotEmpty) ...[
                   Row(
                     children: [
@@ -426,8 +424,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                       .map((n) => _buildNoticeItem(n, colorScheme)),
                 ],
 
-                // Empty State
-
+                // Empty state
                 if (schedules.isEmpty && dateNotices.isEmpty)
                   _buildEmptyState(colorScheme, "Nothing scheduled"),
               ],
@@ -445,7 +442,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       decoration: BoxDecoration(
         color: Color(s.colorHex).withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border(left: BorderSide(color: Color(s.colorHex), width: 3)),
+        border: Border(
+            left: BorderSide(color: Color(s.colorHex), width: 3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -513,21 +511,5 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           ? 'Enjoy your free day!'
           : 'Nothing scheduled for this date.',
     );
-  }
-
-  String _getWeekday(int weekday) {
-    const days = [
-      'Monday', 'Tuesday', 'Wednesday', 'Thursday',
-      'Friday', 'Saturday', 'Sunday'
-    ];
-    return days[weekday - 1];
-  }
-
-  String _getMonthShort(int month) {
-    const months = [
-      'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
-      'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'
-    ];
-    return months[month - 1];
   }
 }

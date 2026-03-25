@@ -1,10 +1,9 @@
-import 'package:intl/intl.dart';
+import '../core/utils/date_utils_ext.dart';
 import '../models/schedule_model.dart';
 import '../models/notice_model.dart';
 
-/// ----------------------------
+
 /// TODAY'S SCHEDULE (Dashboard)
-/// ----------------------------
 
 final List<ScheduleItem> todaySchedule = [
   ScheduleItem(
@@ -36,9 +35,8 @@ final List<ScheduleItem> todaySchedule = [
   ),
 ];
 
-/// ----------------------------
+
 /// FULL WEEK SCHEDULE
-/// ----------------------------
 
 final List<ScheduleItem> fullSchedule = [
   // Monday
@@ -164,9 +162,8 @@ final List<ScheduleItem> fullSchedule = [
   ),
 ];
 
-/// ----------------------------
 /// NOTICES DATA (UPDATED)
-/// ----------------------------
+
 final _now = DateTime.now();
 
 final List<NoticeItem> notices = [
@@ -175,7 +172,6 @@ final List<NoticeItem> notices = [
     description:
     'Tomorrow\'s Software Development Project lab has been rescheduled from 10:50 AM to 11:20 AM. Room remains the same (Lab 305).',
     time: '2h ago',
-    date: DateTime(_now.year, _now.month, _now.day),
     postedBy: 'CR - CSE 23',
     type: NoticeType.urgent,
   ),
@@ -184,7 +180,6 @@ final List<NoticeItem> notices = [
     description:
     'DBMS assignment (Database Design Project) is due on December 20, 2025. Submit via email to the course instructor.',
     time: '1d ago',
-    date: DateTime(_now.year, _now.month, _now.day - 1),
     postedBy: 'Admin - CSE Dept',
     type: NoticeType.department,
   ),
@@ -193,7 +188,6 @@ final List<NoticeItem> notices = [
     description:
     'University will be closed for winter break from December 24 to January 2. Campus reopens on January 3, 2026.',
     time: '3d ago',
-    date: DateTime(_now.year, _now.month, _now.day - 3),
     postedBy: 'RUET Administration',
     type: NoticeType.university,
   ),
@@ -202,7 +196,6 @@ final List<NoticeItem> notices = [
     description:
     'The mid-term examination schedule for all 2nd year students has been published. Please check the notice board or student portal.',
     time: '5d ago',
-    date: DateTime(_now.year, _now.month, _now.day - 5),
     postedBy: 'Exam Controller',
     type: NoticeType.department,
   ),
@@ -211,7 +204,6 @@ final List<NoticeItem> notices = [
     description:
     'Computer Lab 3 will be closed for maintenance from March 15-17. Please use alternative labs during this period.',
     time: '1w ago',
-    date: DateTime(_now.year, _now.month, _now.day - 7),
     postedBy: 'Lab Administrator',
     type: NoticeType.department,
   ),
@@ -220,7 +212,6 @@ final List<NoticeItem> notices = [
     description:
     'Campus-wide internet service will be temporarily unavailable on Saturday, March 20 from 12:00 AM to 6:00 AM for system upgrades.',
     time: '1w ago',
-    date: DateTime(_now.year, _now.month, _now.day - 8),
     postedBy: 'IT Department',
     type: NoticeType.urgent,
   ),
@@ -229,7 +220,6 @@ final List<NoticeItem> notices = [
     description:
     'A hands-on workshop on Competitive Programming will be held next week in the central seminar hall. Registration required.',
     time: '2w ago',
-    date: DateTime(_now.year, _now.month, _now.day - 14),
     postedBy: 'RAPL Programming Club',
     type: NoticeType.university,
   ),
@@ -238,22 +228,21 @@ final List<NoticeItem> notices = [
     description:
     'Last date for semester fee payment is 25th March. Late payment will incur a fine of 500 BDT.',
     time: '2w ago',
-    date: DateTime(_now.year, _now.month, _now.day - 15),
     postedBy: 'Accounts Department',
     type: NoticeType.university,
   ),
 ];
 
+// QUERY HELPERS
+
 List<ScheduleItem> getSchedulesForDate(DateTime date) {
-  final weekdayName = DateFormat('EEEE').format(date);
-  return fullSchedule.where((item) => item.day == weekdayName).toList();
+  final dayName = AppDateUtils.scheduleDay(date);
+  return fullSchedule.where((item) => item.day == dayName).toList();
 }
 
-bool _isSameDay(DateTime a, DateTime b) =>
-    a.year == b.year && a.month == b.month && a.day == b.day;
-
+/// Returns notices pinned to specific demo dates.
 List<NoticeItem> getNoticesForDate(DateTime date) {
   return notices
-      .where((n) => n.date != null && _isSameDay(n.date!, date))
+      .where((n) => n.date != null && AppDateUtils.isSameDay(n.date!, date))
       .toList();
 }
